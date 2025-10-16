@@ -5,6 +5,13 @@ It reads your current context form `kubeconfig` and connects `Telepresence` to t
 
 ---
 
+## ⚙️ Requirements
+
+Install teleprecence client: https://telepresence.io/docs/install/client
+
+
+---
+
 ## 🚀 Features
 
 * Automatically detects your current Kubernetes context and namespace
@@ -30,7 +37,7 @@ teleconnect [flags]
 | `--kubeconfig` | `-k`  | Path to kubeconfig file                       | `$KUBECONFIG` or `~/.kube/config` |
 | `--namespace`  | `-n`  | Kubernetes namespace                          | From current context              |
 | `--cluster`    | `-c`  | Kubernetes cluster name                       | From current context              |
-| `--also-proxy` |       | Additional CIDR to proxy through Telepresence | `10.0.0.0/8` *(default)*          |
+| `--also-proxy` |       | Additional CIDR to proxy                      | `10.0.0.0/8` *(default)*          |
 
 Example:
 
