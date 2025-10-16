@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/iapershin/teleconnect/internal/executor"
+	"github.com/iapershin/teleconnect/internal/log"
 )
 
 const (
@@ -28,7 +29,7 @@ func Connect(ctx context.Context, opts ConnectOptions) error {
 	if err := executor.RunCommand(ctx, telepresenceBinary, connectArgs...); err != nil {
 		return fmt.Errorf("failed to start telepresence session: %w", err)
 	}
-	fmt.Println("\033[1;32mTelepresence connected successfully\033[0m")
+	log.LogSuccess("Telepresence connected successfully")
 	return nil
 }
 
