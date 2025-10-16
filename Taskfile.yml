@@ -1,0 +1,35 @@
+version: '3'
+
+vars:
+  os: "{{OS}}"
+  arch: '{{ternary "arm64" ARCH (eq ARCH "arm")}}'
+  dist_dir: dist
+  bin_name: teleconnect
+  install_dir: '{{default ("$HOME/.local/bin") .INSTALL_DIR}}'
+  out_dir: '{{.dist_dir}}/{{.os}}-{{.arch}}'
+
+tasks:
+  test:
+    desc: Run unit tests
+    cmds:
+      - go test -v ./...
+
+  build:
+    desc: Build binary for current platform
+    cmds:
+        - mkdir -p {{.out_dir}}
+        - go build -o "{{.out_dir}}/{{.bin_name}}" cmd/{{.bin_name}}/main.go
+      
+
+  install:
+    desc: 'Install binary (default: ~/.local/bin)'
+    deps: [build]
+    cmds:
+      -  mkdir -p {{.install_dir}}
+      -  cp "{{.out_dir}}/{{.bin_name}}" "{{.install_dir}}/{{.bin_name}}"
+      -  chmod +x "{{.install_dir}}/{{.bin_name}}"
+
+  clean:
+    desc: Clean build artifacts
+    cmds:
+      - rm -rf {{.dist_dir}}
