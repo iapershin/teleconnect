@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/spf13/cobra"
@@ -10,7 +11,7 @@ const (
 	defaultAlsoProxyCIDR = "10.10.0.0/14"
 )
 
-func Execute() error {
+func Execute(ctx context.Context) error {
 	var (
 		namespace      string
 		cluster        string
@@ -25,7 +26,7 @@ func Execute() error {
 If no namespace is specified, the current context's namespace from kubeconfig is used.
 Optionally, you can switch kubectl contexts based on a provided suffix.`,
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return ConnectCmd(cmd.Context(), ConnectCmdOptions{
+			return ConnectCmd(ctx, ConnectCmdOptions{
 				KubeconfigPath: kubeconfigPath,
 				Namespace:      namespace,
 				Cluster:        cluster,
@@ -46,7 +47,7 @@ Optionally, you can switch kubectl contexts based on a provided suffix.`,
 	rootCmd.SilenceUsage = true
 	rootCmd.SilenceErrors = true
 
-	if err := rootCmd.Execute(); err != nil {
+	if err := rootCmd.ExecuteContext(ctx); err != nil {
 		return err
 	}
 
