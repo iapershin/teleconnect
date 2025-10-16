@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	defaultAlsoProxyCIDR = "10.10.0.0/14"
+	defaultAlsoProxyCIDR = "10.0.0.0/8"
 )
 
 func Execute(ctx context.Context) error {
