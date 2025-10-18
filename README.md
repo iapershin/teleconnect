@@ -3,13 +3,9 @@
 A lightweight CLI utility for quickly establishing a [Telepresence](https://www.telepresence.io/) connection to a Kubernetes namespace.
 It reads your current context form `kubeconfig` and connects `Telepresence` to the corresponding namespace — making local debugging and development against remote clusters effortless.
 
----
-
 ## Requirements
 
 Install teleprecence client: https://telepresence.io/docs/install/client
-
----
 
 ## Installation 
 
@@ -33,8 +29,6 @@ go install github.com/iapershin/teleconnect/cmd/teleconnect@latest
   * A custom `kubeconfig` file
   * Additional CIDR ranges for proxying traffic (`--also-proxy`)
 * Gracefully handles existing Telepresence sessions before reconnecting
-
----
 
 ## Usage
 
