@@ -5,8 +5,7 @@ vars:
   arch: '{{ternary "arm64" ARCH (eq ARCH "arm")}}'
   dist_dir: dist
   bin_name: teleconnect
-  install_dir: '{{default ("$HOME/.local/bin") .INSTALL_DIR}}'
-  out_dir: '{{.dist_dir}}/{{.os}}-{{.arch}}'
+  install_dir: '{{default ("$HOME/go/bin") .INSTALL_DIR}}'
 
 tasks:
   test:
@@ -14,21 +13,61 @@ tasks:
     cmds:
       - go test -v ./...
 
-  build:
+  _build:
+    cmds:
+      - go build -o "{{.dist_dir}}/$GOOS-$GOARCH/{{.bin_name}}" cmd/{{.bin_name}}/main.go
+    env:
+      GOOS: "{{.targetOS}}"
+      GOARCH: "{{.targetArch}}"
+
+  build:dev:
     desc: Build binary for current platform
     cmds:
-        - mkdir -p {{.out_dir}}
-        - go build -o "{{.out_dir}}/{{.bin_name}}" cmd/{{.bin_name}}/main.go
-      
+      - task: _build
+        vars:
+          targetOS: "{{.os}}"
+          targetArch: "{{.arch}}"
 
-  install:
-    desc: 'Install binary (default: ~/.local/bin)'
-    deps: [build]
+  build:dist:
+    desc: Build binaries for all platforms
+    deps:
+      - build:dist:linux:amd64
+      - build:dist:linux:arm64
+      - build:dist:darwin:amd64
+      - build:dist:darwin:arm64
+  
+  build:dist:linux:amd64:
+    desc: Build binary for linux/amd64
     cmds:
-      -  mkdir -p {{.install_dir}}
-      -  cp "{{.out_dir}}/{{.bin_name}}" "{{.install_dir}}/{{.bin_name}}"
-      -  chmod +x "{{.install_dir}}/{{.bin_name}}"
+      - task: _build
+        vars:
+          targetOS: linux
+          targetArch: amd64
+  
+  build:dist:linux:arm64:
+    desc: Build binary for linux/arm64
+    cmds:
+      - task: _build
+        vars:
+          targetOS: linux
+          targetArch: arm64
+  
+  build:dist:darwin:amd64:
+    desc: Build binary for darwin/amd64
+    cmds:
+      - task: _build
+        vars:
+          targetOS: darwin
+          targetArch: amd64
 
+  build:dist:darwin:arm64:
+    desc: Build binary for darwin/arm64
+    cmds:
+      - task: _build
+        vars:
+          targetOS: darwin
+          targetArch: arm64
+          
   clean:
     desc: Clean build artifacts
     cmds:
