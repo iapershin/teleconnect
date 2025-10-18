@@ -5,14 +5,26 @@ It reads your current context form `kubeconfig` and connects `Telepresence` to t
 
 ---
 
-## ⚙️ Requirements
+## Requirements
 
 Install teleprecence client: https://telepresence.io/docs/install/client
 
-
 ---
 
-## 🚀 Features
+## Installation 
+
+```bash
+curl -L -o teleconnect.tar.gz https://github.com/iapershin/teleconnect/releases/download/<VERSION>/teleconnect-<OS>-<PLATFORM>.tar.gz
+tar -xzf teleconnect.tar.gz -C <INSTALL_PATH>
+```
+
+OR
+
+```bash
+go install github.com/iapershin/teleconnect/cmd/teleconnect@latest
+```
+
+## Features
 
 * Automatically detects your current Kubernetes context and namespace
 * Optionally allows specifying:
@@ -24,7 +36,7 @@ Install teleprecence client: https://telepresence.io/docs/install/client
 
 ---
 
-## ⚙️ Usage
+## Usage
 
 ```bash
 teleconnect [flags]
